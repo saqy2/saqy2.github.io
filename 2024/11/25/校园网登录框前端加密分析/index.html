@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="Hexo Theme Keep">
     <meta name="description" content="Hexo Theme Keep">
-    <meta name="author" content="Keep Team">
+    <meta name="author" content="redpomelo">
     
     <title>
         
-        Keep Theme
+            校园网登录框前端加密分析 |
+        
+        红柚的学习小站(=^-ω-^=)
     </title>
     
 <link rel="stylesheet" href="/css/style.css">
 
     
-        <link rel="shortcut icon" href="/images/logo.svg">
+        <link rel="shortcut icon" href="/images/favicon.svg">
     
     
 <link rel="stylesheet" href="/font/css/fontawesome.min.css">
@@ -32,11 +34,11 @@
     
     <script class="keep-theme-configurations">
     const KEEP = window.KEEP || {}
-    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"}
-    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"Keep Theme","author":"Keep Team","avatar":"/images/avatar.svg","logo":"/images/logo.svg","favicon":"/images/logo.svg"},"menu":{"home":"/","archives":"/archives"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":false,"tag":false,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":false,"preload":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2020,"word_count":false,"site_deploy":{"enable":false,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
-    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
-    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
-    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"红柚的学习小站(=^-ω-^=)","author":"redpomelo","avatar":"https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640","logo":"/images/logo.ico","favicon":"/images/favicon.svg"},"menu":{"home":"/","archives":"/archives","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.webp","background_img_dark":"/images/bg.svg","description":"且视他人之疑目如盏盏鬼火 || 大胆地去走你的夜路","hitokoto":false},"social_contact":{"enable":true,"links":{"github":"https://github.com/saqy2","weixin":null,"qq":"https://tool.gljlw.com/qq/?qq=3024951439","weibo":null,"zhihu":null,"twitter":null,"x":"https://x.com/qinshihuangya","facebook":null,"email":"georgephillips4264@gmail.com"}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":true,"preload":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2020,"word_count":false,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
   </script>
 <meta name="generator" content="Hexo 7.3.0"></head>
 
@@ -64,11 +66,11 @@
         <div class="left flex-start border-box">
             
                 <a class="logo-image border-box" href="/">
-                    <img src="/images/logo.svg">
+                    <img src="/images/logo.ico">
                 </a>
             
             <a class="site-name border-box" href="/">
-               Keep Theme
+               红柚的学习小站(=^-ω-^=)
             </a>
         </div>
 
@@ -80,7 +82,7 @@
                         <li class="menu-item flex-start border-box">
                             <a class="menu-text-color border-box" href="/">
                                 
-                                HOME
+                                首页
                                 
                             </a>
                             
@@ -90,16 +92,32 @@
                         <li class="menu-item flex-start border-box">
                             <a class="menu-text-color border-box" href="/archives">
                                 
-                                ARCHIVES
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                关于
                                 
                             </a>
                             
                         </li>
                     
                     
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
                 </ul>
             </div>
             <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
                 
                 <div class="icon-item menu-bar">
                     <div class="menu-bar-middle"></div>
@@ -116,7 +134,7 @@
                     <label class="drawer-menu-label border-box">
                         <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
                             
-                            HOME
+                            首页
                         </a>
                         
                     </label>
@@ -128,7 +146,19 @@
                     <label class="drawer-menu-label border-box">
                         <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
                             
-                            ARCHIVES
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            关于
                         </a>
                         
                     </label>
@@ -159,7 +189,7 @@
             <div class="post-content-bottom border-box">
                 
                     <div class="post-title">
-                        
+                        校园网登录框前端加密分析
                     </div>
                 
 
@@ -167,12 +197,12 @@
                     <div class="post-header border-box">
                         
                             <div class="avatar-box border-box">
-                                <img src="/images/avatar.svg">
+                                <img src="https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640">
                             </div>
                         
                         <div class="info-box">
                             <div class="author border-box">
-                                <span class="name">Keep Team</span>
+                                <span class="name">redpomelo</span>
                                 
                                     <span class="author-badge">Lv1</span>
                                 
@@ -187,19 +217,28 @@
         
             <span class="meta-info-item post-create-date">
                 <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
-                <span class="datetime">2024-11-05 22:19:35</span>
+                <span class="datetime">2024-11-25 16:33:49</span>
             </span>
 
             
                 <span class="meta-info-item post-update-date">
                     <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                    <span class="datetime" data-updated="Wed Nov 13 2024 14:00:24 GMT+0800">2024-11-13 14:00:24</span>
+                    <span class="datetime" data-updated="Mon Nov 25 2024 16:59:12 GMT+0800">2024-11-25 16:59:12</span>
                 </span>
             
         
 
         
 
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li>
+                        
+                    
+                </ul>
+            </span>
         
 
         
@@ -221,42 +260,42 @@
 
                     
                          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尝试对学校校园网登录框进行爆破，发现密码在前端被加密了</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105222140773.png"  alt="image-20241105222140773"></p>
-<h2 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h2><p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105222239417.png"  alt="image-20241105222239417"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222140773.png" alt="test"></p>
+<h2 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h2><p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222239417.png" alt="image-20241105222239417"></p>
 <p>抓包信息</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DDDDD=2022***&amp;upass=3d5c84b6fb1dc75987884f39c05b0e6a123456782&amp;R1=0&amp;R2=1&amp;para=00&amp;0MKKey=123456&amp;v6ip=</span><br></pre></td></tr></table></figure>
 
 <p>From表单提交上来的文本这些参数，DDDD是用户名，upass是密码，后面的参数意义不明，看样子是MD5加密，尝试输入admin，然后拿到md5解密网站去解密一波看看</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105223037070.png"  alt="image-20241105223037070"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223037070.png" alt="image-20241105223037070"></p>
 <p>根本查不到，所以不是普通的MD5加密，遂开始Js逆向</p>
 <h2 id="Js逆向"><a href="#Js逆向" class="headerlink" title="Js逆向"></a>Js逆向</h2><p>点击登录按钮，查看堆栈信息，总共调用了两个JS文件</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105223344308.png"  alt="image-20241105223344308"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223344308.png" alt="image-20241105223344308"></p>
 <p>全局搜索Password，定位到这里，但显然这个password并不是用于加密的相关函数，但找了找其他关键字，也没有，索性在这里下一个断点，程序执行到这里时会卡住，</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105224303608.png"  alt="image-20241105224303608"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224303608.png" alt="image-20241105224303608"></p>
 <p>这时点击继续执行代码，点击返回之后，调用堆栈信息多出了一个JS文件a41.js</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105224546578.png"  alt="image-20241105224546578"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224546578.png" alt="image-20241105224546578"></p>
 <p>我们点击跟进，在a41.js中发现function ee()函数，此处下一个断点，这里下断点的原因程序执行完之后会把内存里的变量信息全部丢掉，所以我们要赶在程序没执行完之前去看看变量里面都有些啥，果不其然，定位到了我们输入的源数据，现在已经成功确定了加密算法函数在a41.js中</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105224914871.png"  alt="image-20241105224914871"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224914871.png" alt="image-20241105224914871"></p>
 <p>现在我们把这个a41.js下载下来分析</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105225134864.png"  alt="image-20241105225134864"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225134864.png" alt="image-20241105225134864"></p>
 <p>这段JavaScript代码包含了多个函数，主要用于处理登录逻辑、MD5加密、Base64编码，以及Cookie的设置、获取和删除。</p>
 <ul>
 <li><code>ee()</code>: 这个函数处理登录时的逻辑。它首先检查用户名和密码是否已输入，然后根据<code>ps</code>变量的值决定密码是否需要进行MD5加密或Base64编码，最后提交表单。同时，它处理与Cookie相关的逻辑，如保存登录信息。</li>
 </ul>
-<p>但是在Js文件的最顶上发现ps是一个常量，所以说代码永远只会进入到else分支<img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105225326077.png"  alt="image-20241105225326077"></p>
+<p>但是在Js文件的最顶上发现ps是一个常量，所以说代码永远只会进入到else分支<img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225326077.png" alt="image-20241105225326077"></p>
 <p>这个分支就是加密的整个逻辑了，pid和cala均为常量，所以<strong>tmpchar</strong>就等于</p>
 <p>2+用户输入+12345678，最终在将tmpchar的值md5加密，然后加上123456782</p>
 <p>最后得出结论，</p>
 <p>C&#x3D;密文，M等于明文</p>
 <p><strong>C &#x3D; MD5(2+M+12345678) + 12345678+2</strong></p>
-<h2 id="构建Python脚本"><a href="#构建Python脚本" class="headerlink" title="构建Python脚本"></a>构建Python脚本</h2><p>知道加密算法之后，就可以批量加密密码来进行爆破了，虽然市面上有Burp的插件（<a class="link"   target="_blank" rel="noopener" href="https://github.com/c0ny1/jsEncrypter%EF%BC%89" >https://github.com/c0ny1/jsEncrypter）<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="构建Python脚本"><a href="#构建Python脚本" class="headerlink" title="构建Python脚本"></a>构建Python脚本</h2><p>知道加密算法之后，就可以批量加密密码来进行爆破了，虽然市面上有Burp的插件（<a class="link" target="_blank" rel="noopener" href="https://github.com/c0ny1/jsEncrypter%EF%BC%89">https://github.com/c0ny1/jsEncrypter）<i class="fas fa-external-link-alt"></i></a></p>
 <p>能直接调用JS来返回密文的，但是一点不想写JS文件，遂写了一个Python脚本用来批量加密字典</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">input_str</span>):</span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(input_str.encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_payload</span>(<span class="params">source_data</span>):</span><br><span class="line">    a = <span class="string">&quot;2&quot;</span></span><br><span class="line">    b = <span class="string">&quot;12345678&quot;</span></span><br><span class="line">    c = md5(a + source_data + b)</span><br><span class="line">    payload = c + <span class="string">&quot;123456782&quot;</span></span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_data_from_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">return</span> file.readlines()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_encrypted_data_to_file</span>(<span class="params">encrypted_data, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> encrypted <span class="keyword">in</span> encrypted_data:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_original_and_encrypted_data</span>(<span class="params">data_pairs, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> original, encrypted <span class="keyword">in</span> data_pairs:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;original.strip()&#125;</span> : <span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_data</span>(<span class="params">input_file, encrypted_file, original_and_encrypted_file</span>):</span><br><span class="line">    data_pairs = []</span><br><span class="line">    encrypted_data = []</span><br><span class="line">    data_lines = read_data_from_file(input_file)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data_lines:</span><br><span class="line">        encrypted = generate_payload(line.strip())</span><br><span class="line">        data_pairs.append((line.strip(), encrypted))</span><br><span class="line">        encrypted_data.append(encrypted)</span><br><span class="line">    save_encrypted_data_to_file(encrypted_data, encrypted_file)</span><br><span class="line">    save_original_and_encrypted_data(data_pairs, original_and_encrypted_file)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example usage</span></span><br><span class="line">input_file = <span class="string">&#x27;dic.txt&#x27;</span></span><br><span class="line">encrypted_file = <span class="string">&#x27;encrypted_data.txt&#x27;</span></span><br><span class="line">original_and_encrypted_file = <span class="string">&#x27;original_and_encrypted_data.txt&#x27;</span></span><br><span class="line">process_data(input_file, encrypted_file, original_and_encrypted_file)</span><br></pre></td></tr></table></figure>
 
 <p>最后运行效果：</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241105230720525.png"  alt="image-20241105230720525"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105230720525.png" alt="image-20241105230720525"></p>
 <p>至此Js的逆向就告一段落,把Python脚本加密过的payload，成功爆破出免费账户</p>
-<p><img   src="/./%E6%A0%A1%E5%9B%AD%E7%BD%91js%E9%80%86%E5%90%91.assets/image-20241113135838112.png"  alt="image-20241113135838112"></p>
+<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241113135838112.png" alt="image-20241113135838112"></p>
 
                     
                 </div>
@@ -265,6 +304,14 @@
 
                 <div class="post-bottom-tags-and-share border-box">
                     <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+                                    </li>
+                                
+                            </ul>
                         
                     </div>
                     <div>
@@ -303,14 +350,21 @@
     <div class="copyright-info info-item">
     &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2024
     
-            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Keep Team</a>
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
         
     </div>
 
     <div class="theme-info info-item">
-        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
     </div>
 
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
     
 
     
@@ -399,6 +453,35 @@
 
     <!-- local search -->
     
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
     <!-- tablet toc -->
     
@@ -426,6 +509,10 @@
 
 
 <!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
 
 
 <!-- lazyload -->
