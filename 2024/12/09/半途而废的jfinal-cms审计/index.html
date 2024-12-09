@@ -9,7 +9,7 @@
     
     <title>
         
-            校园网登录框前端加密分析 |
+            半途而废的jfinal_cms审计 |
         
         红柚的学习小站(=^-ω-^=)
     </title>
@@ -197,7 +197,7 @@
             <div class="post-content-bottom border-box">
                 
                     <div class="post-title">
-                        校园网登录框前端加密分析
+                        半途而废的jfinal_cms审计
                     </div>
                 
 
@@ -225,13 +225,13 @@
         
             <span class="meta-info-item post-create-date">
                 <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
-                <span class="datetime">2024-11-25 16:33:49</span>
+                <span class="datetime">2024-12-09 10:31:38</span>
             </span>
 
             
                 <span class="meta-info-item post-update-date">
                     <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                    <span class="datetime" data-updated="Mon Nov 25 2024 16:59:12 GMT+0800">2024-11-25 16:59:12</span>
+                    <span class="datetime" data-updated="Mon Dec 09 2024 10:36:35 GMT+0800">2024-12-09 10:36:35</span>
                 </span>
             
         
@@ -242,7 +242,7 @@
             <span class="post-tag meta-info-item border-box">
                 <ul class="post-tag-ul">
                     
-                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li>
                         
                     
                 </ul>
@@ -252,7 +252,7 @@
         
         
             <span class="meta-info-item post-wordcount">
-                <i class="icon fas fa-file-word"></i>&nbsp;<span>865 字</span>
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>534 字</span>
             </span>
         
         
@@ -275,43 +275,23 @@
                     
 
                     
-                         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尝试对学校校园网登录框进行爆破，发现密码在前端被加密了</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222140773.png" alt="test"></p>
-<h2 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h2><p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222239417.png" alt="image-20241105222239417"></p>
-<p>抓包信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DDDDD=2022***&amp;upass=3d5c84b6fb1dc75987884f39c05b0e6a123456782&amp;R1=0&amp;R2=1&amp;para=00&amp;0MKKey=123456&amp;v6ip=</span><br></pre></td></tr></table></figure>
+                         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次失败的代码审计，还有好多洞审出来没有记录，因为审出来打开GitHub issue界面发现大家都提交过了，只是项目年久失修没有人维护没人修，遂直接放弃，展示一下前十分钟的xss成果…后面的sql注入，rce什么的不想写了</p>
+<p>仓库链接：<a class="link" target="_blank" rel="noopener" href="https://github.com/jflyfox/jfinal_cms">https://github.com/jflyfox/jfinal_cms<i class="fas fa-external-link-alt"></i></a></p>
+<p>审计版本：5.1.0最新版，一堆洞</p>
+<h1 id="软件包分析"><a href="#软件包分析" class="headerlink" title="软件包分析"></a>软件包分析</h1><p>这个包结构，遵循MVC三层架构</p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208095932971.png" alt="image-20241208095932971"></p>
+<p>项目中只有使用了MySql的驱动，好像是它使用的web框架封装了jdbc操作，查看文档后验证了这是一个WEB+ORM框架</p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208111730420.png" alt="image-20241208111730420"></p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208100405820.png" alt="image-20241208100405820"></p>
+<h1 id="后台XSS"><a href="#后台XSS" class="headerlink" title="后台XSS"></a>后台XSS</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">com/jflyfox/modules/admin/person/PersonController.java</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">save</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">json</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">    json.put(<span class="string">&quot;status&quot;</span>, <span class="number">2</span>);<span class="comment">// 失败</span></span><br><span class="line"></span><br><span class="line">    <span class="type">SysUser</span> <span class="variable">user</span> <span class="operator">=</span> (SysUser) getSessionUser();</span><br><span class="line">    <span class="type">int</span> <span class="variable">userid</span> <span class="operator">=</span> user.getInt(<span class="string">&quot;userid&quot;</span>);</span><br><span class="line">    <span class="type">SysUser</span> <span class="variable">model</span> <span class="operator">=</span> getModel(SysUser.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (userid != model.getInt(<span class="string">&quot;userid&quot;</span>)) &#123;</span><br><span class="line">        json.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;提交数据错误！&quot;</span>);</span><br><span class="line">        renderJson(json.toJSONString());</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第三方用户不需要密码</span></span><br><span class="line">    <span class="keyword">if</span> (user.getInt(<span class="string">&quot;usertype&quot;</span>) != <span class="number">4</span>) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">oldPassword</span> <span class="operator">=</span> getPara(<span class="string">&quot;old_password&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">newPassword</span> <span class="operator">=</span> getPara(<span class="string">&quot;new_password&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">newPassword2</span> <span class="operator">=</span> getPara(<span class="string">&quot;new_password2&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (!user.getStr(<span class="string">&quot;password&quot;</span>).equals(JFlyFoxUtils.passwordEncrypt(oldPassword))) &#123;</span><br><span class="line">            json.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;密码错误！&quot;</span>);</span><br><span class="line">            renderJson(json.toJSONString());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (StrUtils.isNotEmpty(newPassword) &amp;&amp; !newPassword.equals(newPassword2)) &#123;</span><br><span class="line">            json.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;两次新密码不一致！&quot;</span>);</span><br><span class="line">            renderJson(json.toJSONString());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (StrUtils.isNotEmpty(newPassword)) &#123; <span class="comment">// 输入密码并且一直</span></span><br><span class="line">            model.set(<span class="string">&quot;password&quot;</span>, JFlyFoxUtils.passwordEncrypt(newPassword));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (StrUtils.isNotEmpty(model.getStr(<span class="string">&quot;email&quot;</span>)) &amp;&amp; model.getStr(<span class="string">&quot;email&quot;</span>).indexOf(<span class="string">&quot;@&quot;</span>) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        json.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;email格式错误！&quot;</span>);</span><br><span class="line">        renderJson(json.toJSONString());</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">    <span class="comment">// 日志添加</span></span><br><span class="line">model.put(<span class="string">&quot;update_id&quot;</span>, getSessionUser().getUserid());</span><br><span class="line">model.put(<span class="string">&quot;update_time&quot;</span>, getNow());</span><br><span class="line"></span><br><span class="line">model.update();</span><br><span class="line">UserCache.init(); <span class="comment">// 设置缓存</span></span><br><span class="line"><span class="type">SysUser</span> <span class="variable">newUser</span> <span class="operator">=</span> SysUser.dao.findById(userid);</span><br><span class="line">setSessionUser(newUser); <span class="comment">// 设置session</span></span><br><span class="line">json.put(<span class="string">&quot;status&quot;</span>, <span class="number">1</span>);<span class="comment">// 成功</span></span><br><span class="line"></span><br><span class="line">renderJson(json.toJSONString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>From表单提交上来的文本这些参数，DDDD是用户名，upass是密码，后面的参数意义不明，看样子是MD5加密，尝试输入admin，然后拿到md5解密网站去解密一波看看</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223037070.png" alt="image-20241105223037070"></p>
-<p>根本查不到，所以不是普通的MD5加密，遂开始Js逆向</p>
-<h2 id="Js逆向"><a href="#Js逆向" class="headerlink" title="Js逆向"></a>Js逆向</h2><p>点击登录按钮，查看堆栈信息，总共调用了两个JS文件</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223344308.png" alt="image-20241105223344308"></p>
-<p>全局搜索Password，定位到这里，但显然这个password并不是用于加密的相关函数，但找了找其他关键字，也没有，索性在这里下一个断点，程序执行到这里时会卡住，</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224303608.png" alt="image-20241105224303608"></p>
-<p>这时点击继续执行代码，点击返回之后，调用堆栈信息多出了一个JS文件a41.js</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224546578.png" alt="image-20241105224546578"></p>
-<p>我们点击跟进，在a41.js中发现function ee()函数，此处下一个断点，这里下断点的原因程序执行完之后会把内存里的变量信息全部丢掉，所以我们要赶在程序没执行完之前去看看变量里面都有些啥，果不其然，定位到了我们输入的源数据，现在已经成功确定了加密算法函数在a41.js中</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224914871.png" alt="image-20241105224914871"></p>
-<p>现在我们把这个a41.js下载下来分析</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225134864.png" alt="image-20241105225134864"></p>
-<p>这段JavaScript代码包含了多个函数，主要用于处理登录逻辑、MD5加密、Base64编码，以及Cookie的设置、获取和删除。</p>
-<ul>
-<li><code>ee()</code>: 这个函数处理登录时的逻辑。它首先检查用户名和密码是否已输入，然后根据<code>ps</code>变量的值决定密码是否需要进行MD5加密或Base64编码，最后提交表单。同时，它处理与Cookie相关的逻辑，如保存登录信息。</li>
-</ul>
-<p>但是在Js文件的最顶上发现ps是一个常量，所以说代码永远只会进入到else分支<img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225326077.png" alt="image-20241105225326077"></p>
-<p>这个分支就是加密的整个逻辑了，pid和cala均为常量，所以<strong>tmpchar</strong>就等于</p>
-<p>2+用户输入+12345678，最终在将tmpchar的值md5加密，然后加上123456782</p>
-<p>最后得出结论，</p>
-<p>C&#x3D;密文，M等于明文</p>
-<p><strong>C &#x3D; MD5(2+M+12345678) + 12345678+2</strong></p>
-<h2 id="构建Python脚本"><a href="#构建Python脚本" class="headerlink" title="构建Python脚本"></a>构建Python脚本</h2><p>知道加密算法之后，就可以批量加密密码来进行爆破了，虽然市面上有Burp的插件（<a class="link" target="_blank" rel="noopener" href="https://github.com/c0ny1/jsEncrypter%EF%BC%89">https://github.com/c0ny1/jsEncrypter）<i class="fas fa-external-link-alt"></i></a></p>
-<p>能直接调用JS来返回密文的，但是一点不想写JS文件，遂写了一个Python脚本用来批量加密字典</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">input_str</span>):</span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(input_str.encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_payload</span>(<span class="params">source_data</span>):</span><br><span class="line">    a = <span class="string">&quot;2&quot;</span></span><br><span class="line">    b = <span class="string">&quot;12345678&quot;</span></span><br><span class="line">    c = md5(a + source_data + b)</span><br><span class="line">    payload = c + <span class="string">&quot;123456782&quot;</span></span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_data_from_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">return</span> file.readlines()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_encrypted_data_to_file</span>(<span class="params">encrypted_data, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> encrypted <span class="keyword">in</span> encrypted_data:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_original_and_encrypted_data</span>(<span class="params">data_pairs, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> original, encrypted <span class="keyword">in</span> data_pairs:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;original.strip()&#125;</span> : <span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_data</span>(<span class="params">input_file, encrypted_file, original_and_encrypted_file</span>):</span><br><span class="line">    data_pairs = []</span><br><span class="line">    encrypted_data = []</span><br><span class="line">    data_lines = read_data_from_file(input_file)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data_lines:</span><br><span class="line">        encrypted = generate_payload(line.strip())</span><br><span class="line">        data_pairs.append((line.strip(), encrypted))</span><br><span class="line">        encrypted_data.append(encrypted)</span><br><span class="line">    save_encrypted_data_to_file(encrypted_data, encrypted_file)</span><br><span class="line">    save_original_and_encrypted_data(data_pairs, original_and_encrypted_file)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example usage</span></span><br><span class="line">input_file = <span class="string">&#x27;dic.txt&#x27;</span></span><br><span class="line">encrypted_file = <span class="string">&#x27;encrypted_data.txt&#x27;</span></span><br><span class="line">original_and_encrypted_file = <span class="string">&#x27;original_and_encrypted_data.txt&#x27;</span></span><br><span class="line">process_data(input_file, encrypted_file, original_and_encrypted_file)</span><br></pre></td></tr></table></figure>
-
-<p>最后运行效果：</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105230720525.png" alt="image-20241105230720525"></p>
-<p>至此Js的逆向就告一段落,把Python脚本加密过的payload，成功爆破出免费账户</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241113135838112.png" alt="image-20241113135838112"></p>
+<p>可以看到没有对输入的数据做任何内容校验，仅仅做了越权校验以及对邮箱号格式校验，且仅检测内容中是否包含@，然后把所有数据写入到数据库，</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208104932863.png" alt="image-20241208104932863"></p>
+<p>保存后</p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208105001981.png" alt="image-20241208105001981"></p>
+<p>可以看到数据流侵入到了控制流，成功写入数据库，造成了XSS漏洞</p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208105037984.png" alt="image-20241208105037984"></p>
+<p><img src="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/image-20241208105159685.png" alt="image-20241208105159685"></p>
 
                     
                 </div>
@@ -324,7 +304,7 @@
                             <ul class="post-tags-box border-box">
                                 
                                     <li class="tag-item border-box">
-                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
                                     </li>
                                 
                             </ul>
@@ -340,22 +320,22 @@
                 
                     <div class="post-nav border-box">
                         
-                            <div class="prev-post">
-                                <a class="prev"
-                                   rel="prev"
-                                   href="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/"
-                                   title="Java反序列化入门及URLDNS链"
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/12/08/SpringBoot3%E6%95%B4%E5%90%88Shiro%E5%AD%A6%E4%B9%A0/"
+                                   title="SpringBoot3整合Shiro学习"
                                 >
-                                    <span class="left arrow-icon flex-center">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </span>
                                     <span class="title flex-center">
-                                        <span class="post-nav-title-item text-ellipsis">Java反序列化入门及URLDNS链</span>
-                                        <span class="post-nav-item">上一篇</span>
+                                        <span class="post-nav-title-item text-ellipsis">SpringBoot3整合Shiro学习</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
                                     </span>
                                 </a>
                             </div>
-                        
                         
                     </div>
                 
@@ -376,7 +356,7 @@
             <div class="pc-post-toc right-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Burp%E6%8A%93%E5%8C%85"><span class="nav-text">Burp抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Js%E9%80%86%E5%90%91"><span class="nav-text">Js逆向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAPython%E8%84%9A%E6%9C%AC"><span class="nav-text">构建Python脚本</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%86%E6%9E%90"><span class="nav-text">软件包分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0XSS"><span class="nav-text">后台XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-text">验证</span></a></li></ol></li></ol>
     </div>
 </div>
 
@@ -566,7 +546,7 @@
             <div class="tablet-post-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Burp%E6%8A%93%E5%8C%85"><span class="nav-text">Burp抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Js%E9%80%86%E5%90%91"><span class="nav-text">Js逆向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAPython%E8%84%9A%E6%9C%AC"><span class="nav-text">构建Python脚本</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%86%E6%9E%90"><span class="nav-text">软件包分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0XSS"><span class="nav-text">后台XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-text">验证</span></a></li></ol></li></ol>
     </div>
 </div>
 
