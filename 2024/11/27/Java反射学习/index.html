@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="redpomelo">
+    
+    <title>
+        
+            Java反射学习 |
+        
+        红柚的学习小站(=^-ω-^=)
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/favicon.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+        
+            
+                
+<link rel="stylesheet" href="/css/custom.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"rp-sec.top","root":"/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"红柚的学习小站(=^-ω-^=)","author":"redpomelo","avatar":"https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640","logo":"/images/logo.ico","favicon":"/images/favicon.svg"},"menu":{"home":"/","archives":"/archives","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.webp","background_img_dark":"/images/bg.svg","description":"且视他人之疑目如盏盏鬼火 || 大胆地去走你的夜路","hitokoto":false},"social_contact":{"enable":true,"links":{"github":"https://github.com/saqy2","weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"georgephillips4264@gmail.com"}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":false},"comment":{"enable":true,"use":"twikoo","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":"https://rpsec.netlify.app/.netlify/functions/twikoo","region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2024,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":["/css/custom.css"],"js":[null]},"root":"","source_data":{"links":[{"title":"朋友们 (暂无)"},{"name":"test","link":"https://baidu.com","description":"test","avatar":null}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.ico">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               红柚的学习小站(=^-ω-^=)
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        Java反射学习
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">redpomelo</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-11-27 14:22:07</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Wed Nov 27 2024 14:24:34 GMT+0800">2024-11-27 14:24:34</span>
+                </span>
+            
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Java%E5%AE%89%E5%85%A8/">Java安全</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.2k 字</span>
+            </span>
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>早在几个月前在学习Java开发阶段就有了解过一点反射，但最近学习反序列化感觉之前学的还是有点不太够用，基础不牢地动山摇，遂今天跟着Drunkbaby师傅的<a class="link" target="_blank" rel="noopener" href="https://drun1baby.top/2022/05/20/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9F%BA%E7%A1%80%E7%AF%87-02-Java%E5%8F%8D%E5%B0%84%E4%B8%8EURLDNS%E9%93%BE%E5%88%86%E6%9E%90/" title="Java反射基础">博客<i class="fas fa-external-link-alt"></i></a>以及参考p牛的<a class="link" target="_blank" rel="noopener" href="https://govuln.com/docs/java-things/" title="java安全漫谈">Java安全漫谈<i class="fas fa-external-link-alt"></i></a>重新学习一遍反射，也是对自己的一次查缺补漏</p>
+<p><img src="/2024/11/27/Java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0/image-20241127131500409.png" alt="image-20241127131500409"></p>
+<h1 id="反射基础学习"><a href="#反射基础学习" class="headerlink" title="反射基础学习"></a>反射基础学习</h1><p>反射是大多数语言都必不可少的组成部分，对象可以通过反射获取他的类，类可以通过反射拿到所有的方法（包括private修饰符的方法），总之通过反射我们将Java这种静态语言附加上动态特性</p>
+<h2 id="入门："><a href="#入门：" class="headerlink" title="入门："></a>入门：</h2><blockquote>
+<p>需要明确的是，反射只是一种手段，并不能直接造成攻击的效果，最后的攻击链还是要我们自己构造的</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReflectionTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;com.study.entity.Person&quot;</span>);</span><br><span class="line">    clazz.getMethod(<span class="string">&quot;test&quot;</span>).invoke(clazz.newInstance());</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在上述例子中，有几个在反射里极为重要的方法：</p>
+<ul>
+<li>获取类的方法：<strong>forName</strong></li>
+<li>实例化类对象的方法：<strong>newInstance</strong></li>
+<li>获取函数的方法：<strong>getMethod</strong></li>
+<li>执行函数的方法:<strong>invoke</strong></li>
+</ul>
+<p>基本上这几个方法就是Java安全里常用的了</p>
+<h2 id="反射的使用方法"><a href="#反射的使用方法" class="headerlink" title="反射的使用方法"></a>反射的使用方法</h2><p>使用反射首先要实例化对象，有三种实例化方法</p>
+<h3 id="三种实例化方法"><a href="#三种实例化方法" class="headerlink" title="三种实例化方法"></a>三种实例化方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.study.entity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReflectionTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">// 方法一：类的.class属性</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> Person.class;</span><br><span class="line">    System.out.println(c1.getName());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方法二：对象的getClass()方法</span></span><br><span class="line">    <span class="type">Person</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">    <span class="type">Class</span> <span class="variable">c2</span> <span class="operator">=</span> p.getClass();</span><br><span class="line">    System.out.println(c2.getName());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 方法三：Class类的静态方法forName()</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c3</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;com.study.entity.Person&quot;</span>);</span><br><span class="line">    System.out.println(c3.getName());</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/27/Java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0/image-20241127134309653.png" alt="image-20241127134309653"></p>
+<h3 id="获取类里的属性"><a href="#获取类里的属性" class="headerlink" title="获取类里的属性"></a>获取类里的属性</h3><p>在上文中已经学习了如何去通过反射实例化对象，实例化对象的下一步就是要获取类里面的各种属性</p>
+<h4 id="1、获取成员变量Field"><a href="#1、获取成员变量Field" class="headerlink" title="1、获取成员变量Field"></a>1、获取成员变量Field</h4><blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import java.lang.reflect.Field;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>Field[] getFields() ：获取所有 public 修饰的成员变量</li>
+<li>Field[] getDeclaredFields() 获取所有的成员变量，不考虑修饰符</li>
+<li>Field getField(String name) 获取指定名称的 public 修饰的成员变量</li>
+<li>Field getDeclaredField(String name) 获取指定的成员变量</li>
+</ul>
+<p><img src="/2024/11/27/Java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0/image-20241127135159211.png" alt="image-20241127135159211"></p>
+<p>放个源代码，方便Copy~</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReflectionTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> Person.class;</span><br><span class="line">    System.out.println(c1.getName());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取成员变量Field</span></span><br><span class="line">    Field[] fields = c1.getFields(); <span class="comment">//只能找到public成员变量</span></span><br><span class="line">    <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我只能找到public的成员变量：&quot;</span> + field);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fields = c1.getDeclaredFields(); <span class="comment">//找到全部的成员变量</span></span><br><span class="line">    <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我能找到所有成员变量，包括私有的:&quot;</span> + field);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取指定成员变量的值</span></span><br><span class="line">    <span class="type">Field</span> <span class="variable">name</span> <span class="operator">=</span> c1.getDeclaredField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">    System.out.println(name);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-获取成员方法-Method"><a href="#2-获取成员方法-Method" class="headerlink" title="2. 获取成员方法 Method"></a>2. 获取成员方法 Method</h4><p>在Person.java  中添加以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Person.java    </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Study</span><span class="params">(String str)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;学习喵~&quot;</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">sleep</span><span class="params">(String str)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="string">&quot;睡觉喵~&quot;</span> + str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Method <span class="title function_">getMethod</span><span class="params">(String name, 类&lt;?&gt;... parameterTypes)</span> <span class="comment">//返回该类所声明的public方法</span></span><br><span class="line"></span><br><span class="line">Method <span class="title function_">getDeclaredMethod</span><span class="params">(String name, 类&lt;?&gt;... parameterTypes)</span> <span class="comment">//返回该类所声明的所有方法</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//第一个参数获取该方法的名字，第二个参数获取标识该方法的参数类型</span></span><br><span class="line"></span><br><span class="line">Method[] getMethods() <span class="comment">//获取所有的public方法，包括类自身声明的public方法，父类中的public方法、实现的接口方法</span></span><br><span class="line"></span><br><span class="line">Method[] getDeclaredMethods() <span class="comment">// 获取该类中的所有方法</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/27/Java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0/image-20241127140633391.png" alt="image-20241127140633391"></p>
+<p>代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> Person.class;</span><br><span class="line"><span class="comment">//        System.out.println(c1.getName());</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取类的所有方法</span></span><br><span class="line">        Method[] methods = c1.getDeclaredMethods();</span><br><span class="line">        <span class="comment">// 获取类的所有公共方法，包括类自身声明的 public 方法，父类中的  、实现的接口方法</span></span><br><span class="line">        Method[] methods1 = c1.getMethods();</span><br><span class="line">        <span class="comment">// 获取public的study方法</span></span><br><span class="line">        <span class="type">Method</span> <span class="variable">study</span> <span class="operator">=</span> c1.getMethod(<span class="string">&quot;Study&quot;</span>, String.class);</span><br><span class="line">        <span class="comment">// 获取private的sleep方法</span></span><br><span class="line">        <span class="type">Method</span> <span class="variable">sleep</span> <span class="operator">=</span> c1.getDeclaredMethod(<span class="string">&quot;sleep&quot;</span>, String.class);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;getDeclaredMethods: &quot;</span> + method);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Method method : methods1) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;getMethods: &quot;</span> + method);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;getMethod: &quot;</span> + study);</span><br><span class="line">        System.out.println(<span class="string">&quot;getDeclaredMethod: &quot;</span> + sleep);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、获取构造函数"><a href="#4、获取构造函数" class="headerlink" title="4、获取构造函数"></a>4、获取构造函数</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Constructor&lt;?&gt;[] getConstructors() ：只返回<span class="keyword">public</span>构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;?&gt;[] getDeclaredConstructors() ：返回所有构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;&gt; getConstructor(类&lt;?&gt;... parameterTypes) : 匹配和参数配型相符的<span class="keyword">public</span>构造函数</span><br><span class="line"></span><br><span class="line">Constructor&lt;&gt; getDeclaredConstructor(类&lt;?&gt;... parameterTypes) ： 匹配和参数配型相符的构造函数</span><br></pre></td></tr></table></figure>
+
+<p>与上面大同小异</p>
+<h3 id="反射总结"><a href="#反射总结" class="headerlink" title="反射总结"></a>反射总结</h3><p>反射确实就那么点东西，先获取类，并进行实例化对象；</p>
+<p>然后获取类里面的属性；调用类里面的方法，就没了。</p>
+<h2 id="利用反射弹计算器"><a href="#利用反射弹计算器" class="headerlink" title="利用反射弹计算器"></a>利用反射弹计算器</h2><h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p><img src="/2024/11/27/Java%E5%8F%8D%E5%B0%84%E5%AD%A6%E4%B9%A0/image-20241127141556697.png" alt="image-20241127141556697"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"><span class="comment">// 反射弹计算器</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">    <span class="type">Method</span> <span class="variable">m</span> <span class="operator">=</span> c1.getMethod(<span class="string">&quot;getRuntime&quot;</span>);</span><br><span class="line">    <span class="type">Object</span> <span class="variable">runtime</span> <span class="operator">=</span> m.invoke(<span class="literal">null</span>);</span><br><span class="line">    c1.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(runtime, <span class="string">&quot;calc&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="方法二：-简化"><a href="#方法二：-简化" class="headerlink" title="方法二：(简化)"></a>方法二：(简化)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);  </span><br><span class="line">c1.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(c1.getMethod(<span class="string">&quot;getRuntime&quot;</span>).invoke(c1), <span class="string">&quot;C:\\WINDOWS\\System32\\calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Java%E5%AE%89%E5%85%A8/">Java安全</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/12/01/Commons-Collections%E9%93%BE1/"
+                                   title="Commons Collections链1"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Commons Collections链1</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/"
+                                   title="Java反序列化入门及URLDNS链"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Java反序列化入门及URLDNS链</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="twikoo-container">
+        <div id="twikoo-comment"></div>
+        <script 
+                src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        ></script>
+        <script 
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          window.KeepCommentPlugin.initTwikoo = () => {
+            if (window?.twikoo) {
+              twikoo.init({
+                el: '#twikoo-comment',
+                envId: 'https://rpsec.netlify.app/.netlify/functions/twikoo',
+                region: '',
+                lang: 'zh-CN' || 'zh-CN'
+              })
+              window.KeepCommentPlugin.hideLoading()
+            } else {
+              setTimeout(() => {
+                window.KeepCommentPlugin.initTwikoo()
+              }, 1000)
+            }
+          }
+
+          if ('false' === 'true') {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initTwikoo()
+            }, 1200)
+          } else {
+            window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initTwikoo)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0"><span class="nav-text">反射基础学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%EF%BC%9A"><span class="nav-text">入门：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">反射的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-text">三种实例化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%B1%BB%E9%87%8C%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">获取类里的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%8F%98%E9%87%8FField"><span class="nav-text">1、获取成员变量Field</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95-Method"><span class="nav-text">2. 获取成员方法 Method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E8%8E%B7%E5%8F%96%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">4、获取构造函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%80%BB%E7%BB%93"><span class="nav-text">反射总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E5%BC%B9%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="nav-text">利用反射弹计算器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A"><span class="nav-text">方法一：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A-%E7%AE%80%E5%8C%96"><span class="nav-text">方法二：(简化)</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;2024
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">14.4k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0"><span class="nav-text">反射基础学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%EF%BC%9A"><span class="nav-text">入门：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">反射的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-text">三种实例化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%B1%BB%E9%87%8C%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">获取类里的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%8F%98%E9%87%8FField"><span class="nav-text">1、获取成员变量Field</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95-Method"><span class="nav-text">2. 获取成员方法 Method</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E8%8E%B7%E5%8F%96%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">4、获取构造函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%80%BB%E7%BB%93"><span class="nav-text">反射总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%8F%8D%E5%B0%84%E5%BC%B9%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="nav-text">利用反射弹计算器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A"><span class="nav-text">方法一：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A-%E7%AE%80%E5%8C%96"><span class="nav-text">方法二：(简化)</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+
+<div class="">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+
+
+    
+        
+    
+
+</body>
+</html>

