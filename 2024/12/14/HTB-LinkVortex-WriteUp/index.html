@@ -315,7 +315,7 @@
 <p>只有这个目录有个js文件，查看后发现有很多password关键字<img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214171602573.png" alt="image-20241214171602573"></p>
 <p>网上搜了下这个CMS的后台地址</p>
 <p><img src="/2024/12/14/HTB-LinkVortex-WriteUp/image-20241214171853291.png" alt="image-20241214171853291"></p>
-<p>随便找了几个账密试了一下，但是试了几下都没试出来，红温了，写个脚本提取里面的账密用burp全部跑了一遍发现都没有进去，这时候开始观察账户名是否是错的，发现那个文件里的都是@example.com后缀，遂尝试<a class="link" href="mailto:&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#116;&#x62;">&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#116;&#x62;<i class="fas fa-external-link-alt"></i></a></p>
+<p>随便找了几个账密试了一下，但是试了几下都没试出来，红温了，写个脚本提取里面的账密用burp全部跑了一遍发现都没有进去，这时候开始观察账户名是否是错的，发现那个文件里的都是@example.com后缀，遂尝试<a class="link" href="mailto:&#97;&#x64;&#109;&#105;&#110;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#x74;&#98;">&#97;&#x64;&#109;&#105;&#110;&#64;&#x6c;&#105;&#x6e;&#107;&#118;&#x6f;&#114;&#116;&#x65;&#x78;&#x2e;&#x68;&#x74;&#98;<i class="fas fa-external-link-alt"></i></a></p>
 <p>和第一个密码进行登录，然后就进入后台了</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username: admin@linkvortex.htb</span><br><span class="line">password: OctopiFociPilfer45</span><br></pre></td></tr></table></figure>
 
@@ -390,6 +390,22 @@
 
                 
                     <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/"
+                                   title="校园网登录框前端加密分析"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">校园网登录框前端加密分析</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
                         
                         
                             <div class="next-post">
@@ -517,7 +533,7 @@
             
 <footer class="footer border-box">
     <div class="copyright-info info-item">
-    &copy;&nbsp;2024
+    &copy;&nbsp;<span>2024</span>&nbsp;-&nbsp;2025
     
             &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
         
@@ -541,7 +557,7 @@
             
                 <span class="count-item border-box word">
                     <span class="item-type border-box">总字数</span>
-                    <span class="item-value border-box word">14.4k</span>
+                    <span class="item-value border-box word">15.4k</span>
                 </span>
             
 

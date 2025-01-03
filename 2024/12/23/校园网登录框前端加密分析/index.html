@@ -225,7 +225,7 @@
         
             <span class="meta-info-item post-create-date">
                 <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
-                <span class="datetime">2024-11-25 16:33:49</span>
+                <span class="datetime">2024-12-23 17:55:46</span>
             </span>
 
             
@@ -276,29 +276,29 @@
 
                     
                          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>尝试对学校校园网登录框进行爆破，发现密码在前端被加密了</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222140773.png" alt="test"></p>
-<h2 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h2><p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222239417.png" alt="image-20241105222239417"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222140773.png" alt="test"></p>
+<h2 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h2><p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105222239417.png" alt="image-20241105222239417"></p>
 <p>抓包信息</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DDDDD=2022***&amp;upass=3d5c84b6fb1dc75987884f39c05b0e6a123456782&amp;R1=0&amp;R2=1&amp;para=00&amp;0MKKey=123456&amp;v6ip=</span><br></pre></td></tr></table></figure>
 
 <p>From表单提交上来的文本这些参数，DDDD是用户名，upass是密码，后面的参数意义不明，看样子是MD5加密，尝试输入admin，然后拿到md5解密网站去解密一波看看</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223037070.png" alt="image-20241105223037070"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223037070.png" alt="image-20241105223037070"></p>
 <p>根本查不到，所以不是普通的MD5加密，遂开始Js逆向</p>
 <h2 id="Js逆向"><a href="#Js逆向" class="headerlink" title="Js逆向"></a>Js逆向</h2><p>点击登录按钮，查看堆栈信息，总共调用了两个JS文件</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223344308.png" alt="image-20241105223344308"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105223344308.png" alt="image-20241105223344308"></p>
 <p>全局搜索Password，定位到这里，但显然这个password并不是用于加密的相关函数，但找了找其他关键字，也没有，索性在这里下一个断点，程序执行到这里时会卡住，</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224303608.png" alt="image-20241105224303608"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224303608.png" alt="image-20241105224303608"></p>
 <p>这时点击继续执行代码，点击返回之后，调用堆栈信息多出了一个JS文件a41.js</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224546578.png" alt="image-20241105224546578"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224546578.png" alt="image-20241105224546578"></p>
 <p>我们点击跟进，在a41.js中发现function ee()函数，此处下一个断点，这里下断点的原因程序执行完之后会把内存里的变量信息全部丢掉，所以我们要赶在程序没执行完之前去看看变量里面都有些啥，果不其然，定位到了我们输入的源数据，现在已经成功确定了加密算法函数在a41.js中</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224914871.png" alt="image-20241105224914871"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105224914871.png" alt="image-20241105224914871"></p>
 <p>现在我们把这个a41.js下载下来分析</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225134864.png" alt="image-20241105225134864"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225134864.png" alt="image-20241105225134864"></p>
 <p>这段JavaScript代码包含了多个函数，主要用于处理登录逻辑、MD5加密、Base64编码，以及Cookie的设置、获取和删除。</p>
 <ul>
 <li><code>ee()</code>: 这个函数处理登录时的逻辑。它首先检查用户名和密码是否已输入，然后根据<code>ps</code>变量的值决定密码是否需要进行MD5加密或Base64编码，最后提交表单。同时，它处理与Cookie相关的逻辑，如保存登录信息。</li>
 </ul>
-<p>但是在Js文件的最顶上发现ps是一个常量，所以说代码永远只会进入到else分支<img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225326077.png" alt="image-20241105225326077"></p>
+<p>但是在Js文件的最顶上发现ps是一个常量，所以说代码永远只会进入到else分支<img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105225326077.png" alt="image-20241105225326077"></p>
 <p>这个分支就是加密的整个逻辑了，pid和cala均为常量，所以<strong>tmpchar</strong>就等于</p>
 <p>2+用户输入+12345678，最终在将tmpchar的值md5加密，然后加上123456782</p>
 <p>最后得出结论，</p>
@@ -309,9 +309,9 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params">input_str</span>):</span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(input_str.encode()).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_payload</span>(<span class="params">source_data</span>):</span><br><span class="line">    a = <span class="string">&quot;2&quot;</span></span><br><span class="line">    b = <span class="string">&quot;12345678&quot;</span></span><br><span class="line">    c = md5(a + source_data + b)</span><br><span class="line">    payload = c + <span class="string">&quot;123456782&quot;</span></span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_data_from_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">return</span> file.readlines()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_encrypted_data_to_file</span>(<span class="params">encrypted_data, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> encrypted <span class="keyword">in</span> encrypted_data:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_original_and_encrypted_data</span>(<span class="params">data_pairs, file_path</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> original, encrypted <span class="keyword">in</span> data_pairs:</span><br><span class="line">            file.write(<span class="string">f&quot;<span class="subst">&#123;original.strip()&#125;</span> : <span class="subst">&#123;encrypted&#125;</span>\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_data</span>(<span class="params">input_file, encrypted_file, original_and_encrypted_file</span>):</span><br><span class="line">    data_pairs = []</span><br><span class="line">    encrypted_data = []</span><br><span class="line">    data_lines = read_data_from_file(input_file)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data_lines:</span><br><span class="line">        encrypted = generate_payload(line.strip())</span><br><span class="line">        data_pairs.append((line.strip(), encrypted))</span><br><span class="line">        encrypted_data.append(encrypted)</span><br><span class="line">    save_encrypted_data_to_file(encrypted_data, encrypted_file)</span><br><span class="line">    save_original_and_encrypted_data(data_pairs, original_and_encrypted_file)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example usage</span></span><br><span class="line">input_file = <span class="string">&#x27;dic.txt&#x27;</span></span><br><span class="line">encrypted_file = <span class="string">&#x27;encrypted_data.txt&#x27;</span></span><br><span class="line">original_and_encrypted_file = <span class="string">&#x27;original_and_encrypted_data.txt&#x27;</span></span><br><span class="line">process_data(input_file, encrypted_file, original_and_encrypted_file)</span><br></pre></td></tr></table></figure>
 
 <p>最后运行效果：</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105230720525.png" alt="image-20241105230720525"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241105230720525.png" alt="image-20241105230720525"></p>
 <p>至此Js的逆向就告一段落,把Python脚本加密过的payload，成功爆破出免费账户</p>
-<p><img src="/2024/11/25/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241113135838112.png" alt="image-20241113135838112"></p>
+<p><img src="/2024/12/23/%E6%A0%A1%E5%9B%AD%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/image-20241113135838112.png" alt="image-20241113135838112"></p>
 
                     
                 </div>
@@ -343,19 +343,35 @@
                             <div class="prev-post">
                                 <a class="prev"
                                    rel="prev"
-                                   href="/2024/11/25/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%85%A5%E9%97%A8%E5%8F%8AURLDNS%E9%93%BE/"
-                                   title="Java反序列化入门及URLDNS链"
+                                   href="/2025/01/04/Java%E5%86%85%E5%AD%98%E9%A9%AC%E4%B9%8BServlet%E9%A9%AC/"
+                                   title="Java内存马之Servlet马"
                                 >
                                     <span class="left arrow-icon flex-center">
                                         <i class="fas fa-chevron-left"></i>
                                     </span>
                                     <span class="title flex-center">
-                                        <span class="post-nav-title-item text-ellipsis">Java反序列化入门及URLDNS链</span>
+                                        <span class="post-nav-title-item text-ellipsis">Java内存马之Servlet马</span>
                                         <span class="post-nav-item">上一篇</span>
                                     </span>
                                 </a>
                             </div>
                         
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/12/14/HTB-LinkVortex-WriteUp/"
+                                   title="[HTB]LinkVortex WriteUp"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">[HTB]LinkVortex WriteUp</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
                         
                     </div>
                 
@@ -466,7 +482,7 @@
             
 <footer class="footer border-box">
     <div class="copyright-info info-item">
-    &copy;&nbsp;2024
+    &copy;&nbsp;<span>2024</span>&nbsp;-&nbsp;2025
     
             &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">redpomelo</a>
         
@@ -490,7 +506,7 @@
             
                 <span class="count-item border-box word">
                     <span class="item-type border-box">总字数</span>
-                    <span class="item-value border-box word">14.4k</span>
+                    <span class="item-value border-box word">15.4k</span>
                 </span>
             
 
